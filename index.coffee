@@ -1,6 +1,6 @@
 Sandbox = require 'sandbox'
 
-modules.exports =
+module.exports =
   'init': (connection) ->
     @connection = connection
   
