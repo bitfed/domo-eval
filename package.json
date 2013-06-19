@@ -1,0 +1,22 @@
+{
+  "name": "domo-eval",
+  "version": "0.9.1",
+  "description": "Eval plugin for Domo-bot",
+  "main": "index.js",
+  "dependencies": {
+    "sandbox": "~0.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "domo",
+    "irc",
+    "bot",
+    "irc-bot"
+  ],
+  "author": "Riku Rouvila",
+  "license": "BSD"
+}
