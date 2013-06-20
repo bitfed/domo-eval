@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "git@github.com:rikukissa/domo-eval.git",
   "keywords": [
     "domo",
     "irc",
