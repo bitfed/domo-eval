@@ -18,8 +18,7 @@ class DomoEval
   constructor: ->
     @match = 'eval '
 
-  init: (domo) =>
-    @say = domo.client.say
+  init: (@domo) =>
 
   coffeeEval: (str, cb) =>
     try
@@ -31,20 +30,20 @@ class DomoEval
     new Sandbox().run str, (output) => 
       cb null, output.result
   
-  onMessage: (nick, channel, msg, info) =>  
+  onMessage: (nick, channel, msg) => 
     [flags, msg] = parseFlags(msg)
 
     if flags.indexOf('c') > -1
       return @coffeeEval msg, (err, result) =>
         return console.log(err) if err?
         
-        return @say(channel, result) if flags.indexOf('v') > -1
+        return @domo.client.say(channel, result) if flags.indexOf('v') > -1
 
         @jsEval result, (err, output) =>
-          @say channel, output
+          @domo.client.say channel, output
 
     # Default to JavaScript evaluation
     @jsEval msg, (err, output) => 
-      @say channel, output
+      @domo.client.say channel, output
 
 module.exports = new DomoEval

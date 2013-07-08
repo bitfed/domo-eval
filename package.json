@@ -1,6 +1,6 @@
 {
   "name": "domo-eval",
-  "version": "0.9.3",
+  "version": "0.10.4",
   "description": "Eval plugin for Domo-bot",
   "main": "index.js",
   "dependencies": {
