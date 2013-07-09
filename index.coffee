@@ -24,7 +24,7 @@ class DomoEval
     try
       cb null, coffee.compile(str, bare: true).replace('\n', '')
     catch e
-      return cb(e.split('\n')[0])
+      return cb(e)
 
   jsEval: (str, cb) =>
     new Sandbox().run str, (output) => 
@@ -35,8 +35,9 @@ class DomoEval
 
     if flags.indexOf('c') > -1
       return @coffeeEval msg, (err, result) =>
-        return console.log(err) if err?
-        
+
+        return @domo.client.say(channel, err.stack.split("\n")[0]) if err?
+
         return @domo.client.say(channel, result) if flags.indexOf('v') > -1
 
         @jsEval result, (err, output) =>
