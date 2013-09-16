@@ -1,9 +1,9 @@
-domo = require '../index.coffee'
-chai = require 'chai'  
+domo = require '../index'
+chai = require 'chai'
 chai.should()
 
 initializeDomoWithMessageListener = (cb) ->
-	domo.init 
+	domo.init
 		client: say: (channel, msg) =>
 			cb(channel, msg)
 
@@ -27,7 +27,7 @@ describe 'Coffeescript calculation', ->
 			msg.should.equal '1 + 1;'
 			done()
 		domo.onMessage 'nick', '#channel', '-c -v 1 + 1'
-	
+
 	it 'should evaluate to', (done) ->
 		initializeDomoWithMessageListener (channel, msg) ->
 			msg.should.equal '2'
@@ -40,7 +40,7 @@ describe 'Coffeescript function', ->
 			msg.should.equal '(function(name) {  return name;\n})("Domo");\n'
 			done()
 		domo.onMessage 'nick', '#channel', '-c -v ((name)-> return name)("Domo")'
-	
+
 	it 'should evaluate to', (done) ->
 		initializeDomoWithMessageListener (channel, msg) ->
 			msg.should.equal '\'Domo\''

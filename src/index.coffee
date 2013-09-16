@@ -27,10 +27,10 @@ class DomoEval
       return cb(e)
 
   jsEval: (str, cb) =>
-    new Sandbox().run str, (output) => 
+    new Sandbox().run str, (output) =>
       cb null, output.result
-  
-  onMessage: (nick, channel, msg) => 
+
+  onMessage: (nick, channel, msg) =>
     [flags, msg] = parseFlags(msg)
 
     if flags.indexOf('c') > -1
@@ -44,7 +44,7 @@ class DomoEval
           @domo.client.say channel, output
 
     # Default to JavaScript evaluation
-    @jsEval msg, (err, output) => 
+    @jsEval msg, (err, output) =>
       @domo.client.say channel, output
 
 module.exports = new DomoEval
