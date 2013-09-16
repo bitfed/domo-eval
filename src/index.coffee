@@ -16,7 +16,7 @@ parseFlags = (str) ->
 
 class DomoEval
   constructor: ->
-    @match = 'eval '
+    @match = '!eval '
 
   init: (@domo) =>
 
