@@ -1,50 +1,35 @@
 Sandbox = require 'sandbox'
 coffee  = require 'coffee-script'
 
-parseFlags = (str) ->
-  regex = /^-([a-z]*)\s/i
-  flags = []
+getCode = (res, next) ->
+  res.code = res.splats[0]
+  next()
 
-  match = (s) ->
-    return unless (m = s.match(regex))?
-    flags.push m[1]
-    s = str = s.replace(regex, '')
-    match(s)
-
-  match(str)
-  return [flags, str]
-
-class DomoEval
-  constructor: ->
-    @match = '!eval '
-
-  init: (@domo) =>
-
-  coffeeEval: (str, cb) =>
+module.exports.init = (domo) ->
+  domo.route '!eval', (res) -> # TODO HELP
+    @say res.channel, """
+    Domo-eval - Javascript evaluator for Domo
+    usage: !eval <flags> <JavaScript|CoffeeScript>
+    Flags:
+      -c [-v] Evaluate coffeescript, verbose compiled JavaScript with -v flag
+    """
+  domo.route '!eval -c -v *', getCode, (res) ->
     try
-      cb null, coffee.compile(str, bare: true).replace('\n', '')
+      res.code = coffee.compile(res.code, bare: true).replace('\n', '')
     catch e
-      return cb(e)
+      return @say res.channel, e.message
+    @say res.channel, res.code
 
-  jsEval: (str, cb) =>
-    new Sandbox().run str, (output) =>
-      cb null, output.result
+  domo.route '!eval -c *', getCode, (res) ->
+    try
+      res.code = coffee.compile(res.code, bare: true).replace('\n', '')
+    catch e
+      return @say res.channel, e.message
 
-  onMessage: (nick, channel, msg) =>
-    [flags, msg] = parseFlags(msg)
+    new Sandbox().run res.code, (output) =>
+      @say res.channel, output.result
 
-    if flags.indexOf('c') > -1
-      return @coffeeEval msg, (err, result) =>
+  domo.route '!eval *', getCode, (res) ->
+    new Sandbox().run res.code, (output) =>
+      @say res.channel, output.result
 
-        return @domo.client.say(channel, err.stack.split("\n")[0]) if err?
-
-        return @domo.client.say(channel, result) if flags.indexOf('v') > -1
-
-        @jsEval result, (err, output) =>
-          @domo.client.say channel, output
-
-    # Default to JavaScript evaluation
-    @jsEval msg, (err, output) =>
-      @domo.client.say channel, output
-
-module.exports = new DomoEval
