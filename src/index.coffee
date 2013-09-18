@@ -6,13 +6,6 @@ getCode = (res, next) ->
   next()
 
 module.exports.init = (domo) ->
-  domo.route '!eval', (res) -> # TODO HELP
-    @say res.channel, """
-    Domo-eval - Javascript evaluator for Domo
-    usage: !eval <flags> <JavaScript|CoffeeScript>
-    Flags:
-      -c [-v] Evaluate coffeescript, verbose compiled JavaScript with -v flag
-    """
   domo.route '!eval -c -v *', getCode, (res) ->
     try
       res.code = coffee.compile(res.code, bare: true).replace('\n', '')
@@ -33,3 +26,10 @@ module.exports.init = (domo) ->
     new Sandbox().run res.code, (output) =>
       @say res.channel, output.result
 
+  domo.route '!eval', (res) ->
+    @say res.channel, """
+    Domo-eval - Javascript evaluator for Domo
+    usage: !eval <flags> <JavaScript|CoffeeScript>
+    Flags:
+      -c [-v] Evaluate coffeescript, verbose compiled JavaScript with -v flag
+    """
