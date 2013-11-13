@@ -4,6 +4,7 @@
   "description": "Eval plugin for Domo-bot",
   "main": "index.js",
   "dependencies": {
+    "domo-kun": "~0.1.4",
     "sandbox": "~0.8.3",
     "coffee-script": "~1.6.3"
   },
